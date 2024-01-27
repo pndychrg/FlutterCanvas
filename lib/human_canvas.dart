@@ -17,23 +17,40 @@ class _HumanBodyCanvasState extends State<HumanBodyCanvas> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: 300.0,
-          height: 400,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage('assets/tshirt.jpg'),
-            fit: BoxFit.cover,
-          )),
-          child: CustomPaint(
-            // painter: HumanBodyPainter(),
-            painter: ArrowPainter(
-                leftArmColor: leftArmColor,
-                rightArmColor: Colors.red,
-                torsoColor: torsoColor),
+        CustomPaint(
+          painter: ArrowPainter(
+              leftArmColor: leftArmColor,
+              rightArmColor: Colors.red,
+              torsoColor: torsoColor),
+          child: Container(
+            width: 300.0,
+            height: 400,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('assets/tshirt.jpg'),
+              fit: BoxFit.cover,
+              opacity: 0.25,
+            )),
           ),
         ),
-        // Container for color picker
+        // Different method implementation
+        // Container(
+        //   width: 300.0,
+        //   height: 400,
+        //   decoration: BoxDecoration(
+        //       image: DecorationImage(
+        //     image: AssetImage('assets/tshirt.jpg'),
+        //     fit: BoxFit.cover,
+        //   )),
+        //   child: CustomPaint(
+        //     // painter: HumanBodyPainter(),
+        //     painter: ArrowPainter(
+        //         leftArmColor: leftArmColor,
+        //         rightArmColor: Colors.red,
+        //         torsoColor: torsoColor),
+        //   ),
+        // ),
+        // // Container for color picker
         Container(
           child: Column(
             children: [

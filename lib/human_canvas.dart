@@ -1,27 +1,63 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
-class HumanBodyCanvas extends StatelessWidget {
+class HumanBodyCanvas extends StatefulWidget {
   const HumanBodyCanvas({super.key});
 
   @override
+  State<HumanBodyCanvas> createState() => _HumanBodyCanvasState();
+}
+
+class _HumanBodyCanvasState extends State<HumanBodyCanvas> {
+  Color leftArmColor = Colors.red;
+  Color torsoColor = Colors.red;
+  @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300.0,
-      height: 400,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage('assets/tshirt.jpg'),
-        fit: BoxFit.cover,
-      )),
-      child: CustomPaint(
-        // painter: HumanBodyPainter(),
-        painter: ArrowPainter(
-            leftArmColor: Colors.red,
-            rightArmColor: Colors.red,
-            torsoColor: Colors.black),
-      ),
+    return Column(
+      children: [
+        Container(
+          width: 300.0,
+          height: 400,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('assets/tshirt.jpg'),
+            fit: BoxFit.cover,
+          )),
+          child: CustomPaint(
+            // painter: HumanBodyPainter(),
+            painter: ArrowPainter(
+                leftArmColor: leftArmColor,
+                rightArmColor: Colors.red,
+                torsoColor: torsoColor),
+          ),
+        ),
+        // Container for color picker
+        Container(
+          child: Column(
+            children: [
+              Text("Left Arm Color"),
+              MaterialColorPicker(
+                onColorChange: (Color color) {
+                  setState(() {
+                    leftArmColor = color;
+                  });
+                },
+              ),
+              Text("Torso Color"),
+              MaterialColorPicker(
+                onColorChange: (Color color) {
+                  setState(() {
+                    torsoColor = color;
+                  });
+                },
+                selectedColor: torsoColor,
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }
@@ -40,18 +76,17 @@ class ArrowPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // TODO: implement paint
     var torsoPaint = Paint()
-    ..color=torsoColor
-    ..style=PaintingStyle.fill;
+      ..color = torsoColor
+      ..style = PaintingStyle.fill;
     var leftArmPaint = Paint()
-    ..color=leftArmColor
-    ..style=PaintingStyle.fill;
+      ..color = leftArmColor
+      ..style = PaintingStyle.fill;
     var rightArmPaint = Paint()
-    ..color=rightArmColor
-    ..style=PaintingStyle.fill;
+      ..color = rightArmColor
+      ..style = PaintingStyle.fill;
     var torsoPath = Path();
     var leftArmPath = Path();
     var rightArmPath = Path();
-    
 
     torsoPath.moveTo(26, 73);
     torsoPath.quadraticBezierTo(43, 45, 93, 25);
@@ -90,7 +125,7 @@ class ArrowPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 }
 

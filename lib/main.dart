@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:human_canvas/human_canvas.dart';
+import 'package:human_canvas/tshirt_canvas.dart';
 
 void main() {
   runApp(const MainApp());
@@ -17,7 +18,8 @@ class MainApp extends StatelessWidget {
           child: Column(
             children: [
               Text("Hello World"),
-              HumanBodyCanvas(),
+              // HumanBodyCanvas(),
+              TShirtCanvas()
             ],
           ),
         ),

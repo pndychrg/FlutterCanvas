@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
@@ -13,6 +12,7 @@ class HumanBodyCanvas extends StatefulWidget {
 class _HumanBodyCanvasState extends State<HumanBodyCanvas> {
   Color leftArmColor = Colors.red;
   Color torsoColor = Colors.red;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -160,32 +160,6 @@ class HumanBodyPainter extends CustomPainter {
         Radius.circular(20.0));
     canvas.drawRRect(rect, paint);
   }
-
-  // @override
-  // void paint(Canvas canvas, Size size) {
-  //   PictureRecorder recorder = PictureRecorder();
-  //   Canvas backgroundCanvas = Canvas(recorder);
-
-  //   // draw the background Image
-  //   backgroundCanvas.drawImage(
-  //       AssetImage('assets/tshirt.jpg') as Image, Offset(0, 0), Paint());
-  // }
-
-  // @override
-  // void paint(Canvas canvas, Size size) {
-  //   final Paint paint = Paint()
-  //     ..color = Colors.blue
-  //     ..strokeWidth = 2.0
-  //     ..style = PaintingStyle.fill;
-
-  //   // Draw tshirt
-  //   canvas.drawRect(Rect.fromPoints(Offset(50, 50), Offset(150, 200)), paint);
-
-  //   // Draw T-shirt sleeves (optional)
-  //   paint.color = Colors.blue;
-  //   canvas.drawRect(Rect.fromPoints(Offset(30, 70), Offset(50, 150)), paint);
-  //   canvas.drawRect(Rect.fromPoints(Offset(150, 70), Offset(170, 150)), paint);
-  // }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {

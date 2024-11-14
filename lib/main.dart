@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:human_canvas/asset_info_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:human_canvas/constants.dart';
 import 'package:human_canvas/position_input_form.dart';
 import 'custom_draw.dart';
 
@@ -17,6 +18,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
+  // hard coded asset information
   AssetInfoModel selectedCollor = AssetInfoModel(
       assetLocation: "assets/collor_style1.svg",
       dX: 0.37,
@@ -28,32 +30,49 @@ class _MainAppState extends State<MainApp> {
       dY: .135,
       mirrorDX: -.685,
       assetHeightRespToBox: 1.8);
-  String selectedElement = "TShirt";
+
+  String? selectedElement;
+  bool checkIfElementIsSelected() {
+    return selectedElement != null;
+  }
+
+  // this function clears all selectedElement's values
+  void removeSelectedElements() {
+    selectedElement = null;
+    // dx dy are not updated back to 0 currently
+    // as there is a listener in the Form which will update the Asset's values if dx, dy are updated here
+    // _selectedElementDx = 0.0;
+    // _selectedElementDy = 0.0;
+  }
 
   Color collorColor = Colors.white;
   Color tShirtColor = Colors.white;
   Color sleeveColor = Colors.white;
 
-  String collor = "Collor";
-  String torso = "Torso";
-  String sleeve = "Sleeve";
+  // String constants for elements
+  final String collor = "Collor";
+  final String torso = "Torso";
+  final String sleeve = "Sleeve";
 
+  // selected element's positional information
   double _selectedElementDx = 0.0;
   double _selectedElementDy = 0.0;
 
+  // this function is used to update the form values whenever different element i.e torso or sleeve is selected
   void updateDxDyWhenElementChanges(AssetInfoModel selectedElementInfoModel) {
     _selectedElementDx = selectedElementInfoModel.dX;
     _selectedElementDy = selectedElementInfoModel.dY;
     print("$_selectedElementDx $_selectedElementDy");
   }
 
+  // this function updates the element's position value
   void updateSelectedElementPosition(double dx, double dy) {
     setState(() {
       // updating the widget selected values
       _selectedElementDx = dx;
       _selectedElementDy = dy;
       // updating the asset's dx dy postion values
-      if (selectedElement.contains(collor)) {
+      if (checkIfElementIsSelected() && selectedElement!.contains(collor)) {
         selectedCollor.dX = _selectedElementDx;
         selectedCollor.dY = _selectedElementDy;
       } else {
@@ -64,10 +83,12 @@ class _MainAppState extends State<MainApp> {
     });
   }
 
+  // this function updates the selected Element
   void updateSelectedElement() {
-    if (selectedElement.contains(collor)) {
+    if (checkIfElementIsSelected() && selectedElement!.contains(collor)) {
       updateDxDyWhenElementChanges(selectedCollor);
-    } else if (selectedElement.contains(sleeve)) {
+    } else if (checkIfElementIsSelected() &&
+        selectedElement!.contains(sleeve)) {
       updateDxDyWhenElementChanges(selectedSleeve);
     }
   }
@@ -75,11 +96,15 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: Center(
-            // child: Text('Hello World!'),
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
+          body: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTshirtWithSvgPaint(
                   selectedCollor: selectedCollor,
@@ -88,135 +113,224 @@ class _MainAppState extends State<MainApp> {
                   torsoColor: tShirtColor,
                   sleeveColor: sleeveColor,
                 ),
-
-                Row(
-                  children:
-                      getTextButtonsFromList("Collor", getCollors(), (model) {
-                    setState(() {
-                      selectedCollor = model;
-                    });
-                  }),
-                ),
-
-                Row(
-                  children:
-                      getTextButtonsFromList("Sleeve", getSleeves(), (model) {
-                    setState(() {
-                      selectedSleeve = model;
-                    });
-                  }),
-                ),
-                // Row(
-                //   children: [
-                //
-                //     TextButton(onPressed: () {
-                //       setState(() {
-                //         selectedCollor = "assets/collor_style1.svg";
-                //       });
-                //     }, child: Text("Collor 1",)),
-                //     SizedBox(width: 30,),
-                //
-                //     TextButton(onPressed: () {
-                //       setState(() {
-                //         selectedCollor = "assets/collor_style2.svg";
-                //       });
-                //     }, child: Text("Collor 2",)),
-                //     SizedBox(width: 30,),
-                //
-                //     TextButton(onPressed: () {
-                //       setState(() {
-                //         selectedCollor = "assets/collor_style3.svg";
-                //       });
-                //     }, child: Text("Collor 3",)),
-                //     SizedBox(width: 30,),
-                //
-                //     // TextButton(onPressed: () {
-                //     //   setState(() {
-                //     //     selectedCollor = "assets/collor_style4.svg";
-                //     //   });
-                //     // }, child: Text("Collor 4",)),
-                //   ],
-                // ),
-                SizedBox(
-                  height: 50,
-                ),
-
-                Text("Change color for"),
-                Row(
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedElement = collor;
-                            updateSelectedElement();
-                          });
-                        },
-                        child: Text(
-                          collor,
-                          style: TextStyle(
-                              color: selectedElement.contains(collor)
-                                  ? Colors.black
-                                  : Colors.grey),
-                        )),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedElement = torso;
-                          });
-                        },
-                        child: Text(
-                          torso,
-                          style: TextStyle(
-                              color: selectedElement.contains(torso)
-                                  ? Colors.black
-                                  : Colors.grey),
-                        )),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selectedElement = sleeve;
-                            updateSelectedElement();
-                          });
-                        },
-                        child: Text(
-                          sleeve,
-                          style: TextStyle(
-                              color: selectedElement.contains(sleeve)
-                                  ? Colors.black
-                                  : Colors.grey),
-                        )),
-                  ],
-                ),
-                MaterialColorPicker(
-                  onColorChange: (Color color) {
-                    setState(() {
-                      if (selectedElement.contains(collor)) {
-                        collorColor = color;
-                        print('collor color $collorColor');
-                      } else if (selectedElement.contains(sleeve)) {
-                        sleeveColor = color;
-                        print('sleeve color $sleeveColor');
-                      } else {
-                        tShirtColor = color;
-                        print('tshirt color $tShirtColor');
-                      }
-                    });
-                  },
-                ),
+                // Container for Add on Selection
                 SizedBox(
                   height: 10,
                 ),
-                Text("Change Dx Dy Values for selected part"),
-                PositionInputForm(
-                  initialDx: _selectedElementDx,
-                  initialDy: _selectedElementDy,
-                  onValuesChanged: updateSelectedElementPosition,
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey, // Color of the top border
+                        width: 2.0, // Thickness of the top border
+                      ),
+                    ),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    ),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Container for Add Ons
+                      SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Select Add ons",
+                              style: headingStyle,
+                            ),
+                            // Collors Selection Button
+                            Wrap(
+                              // mainAxisSize: MainAxisSize.min,
+                              alignment: WrapAlignment.start,
+                              spacing: 5,
+                              children: getTextButtonsFromList(
+                                  "Collor", getCollors(), (model) {
+                                setState(() {
+                                  selectedCollor = model;
+                                });
+                              }),
+                            ),
+                            // Sleeves Selection Button
+                            Wrap(
+                              alignment: WrapAlignment.start,
+                              spacing: 5,
+                              children: getTextButtonsFromList(
+                                  "Sleeve", getSleeves(), (model) {
+                                setState(() {
+                                  selectedSleeve = model;
+                                });
+                              }),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Container for Colors Selection
+                      SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Select Element to customize",
+                              style: headingStyle,
+                            ),
+                            // Hard coded list of elements
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      // check if selectedElement is already Collor
+                                      if (checkIfElementIsSelected() &&
+                                          selectedElement!.contains(collor)) {
+                                        //   remove all selections
+                                        removeSelectedElements();
+                                      } else {
+                                        selectedElement = collor;
+                                        updateSelectedElement();
+                                      }
+                                    });
+                                  },
+                                  child: Text(collor,
+                                      style: TextStyle(
+                                        color: checkIfElementIsSelected()
+                                            ? (selectedElement!.contains(collor)
+                                                ? Colors.black
+                                                : Colors.grey)
+                                            : Colors.grey,
+                                      )),
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (checkIfElementIsSelected() &&
+                                            selectedElement!.contains(torso)) {
+                                          //   remove all selections
+                                          removeSelectedElements();
+                                        } else {
+                                          selectedElement = torso;
+                                        }
+                                      });
+                                    },
+                                    child: Text(
+                                      torso,
+                                      style: TextStyle(
+                                        color: checkIfElementIsSelected()
+                                            ? (selectedElement!.contains(torso)
+                                                ? Colors.black
+                                                : Colors.grey)
+                                            : Colors.grey,
+                                      ),
+                                    )),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (checkIfElementIsSelected() &&
+                                            selectedElement!.contains(sleeve)) {
+                                          //   remove all selections
+                                          removeSelectedElements();
+                                        } else {
+                                          selectedElement = sleeve;
+                                          updateSelectedElement();
+                                        }
+                                      });
+                                    },
+                                    child: Text(
+                                      sleeve,
+                                      style: TextStyle(
+                                        color: checkIfElementIsSelected()
+                                            ? (selectedElement!.contains(sleeve)
+                                                ? Colors.black
+                                                : Colors.grey)
+                                            : Colors.grey,
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        "Pick a Color for Element ",
+                        style: headingStyle,
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Opacity(
+                        opacity: selectedElement == null ? 0.5 : 1.0,
+                        child: IgnorePointer(
+                          ignoring: selectedElement == null,
+                          child: MaterialColorPicker(
+                            selectedColor: null,
+                            onColorChange: (Color color) {
+                              setState(() {
+                                if (checkIfElementIsSelected() &&
+                                    selectedElement!.contains(collor)) {
+                                  collorColor = color;
+                                  print('collor color $collorColor');
+                                } else if (checkIfElementIsSelected() &&
+                                    selectedElement!.contains(sleeve)) {
+                                  sleeveColor = color;
+                                  print('sleeve color $sleeveColor');
+                                } else {
+                                  tShirtColor = color;
+                                  print('tshirt color $tShirtColor');
+                                }
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      // Form Field Box
+                      SizedBox(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Change Properties for selected part",
+                              style: headingStyle,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Opacity(
+                              opacity: selectedElement == null ? 0.5 : 1.0,
+                              child: IgnorePointer(
+                                ignoring: selectedElement == null,
+                                child: PositionInputForm(
+                                  initialDx: _selectedElementDx,
+                                  initialDy: _selectedElementDy,
+                                  onValuesChanged:
+                                      updateSelectedElementPosition,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 // HumanBodyCanvas(),
                 // TShirtCanvas()
@@ -275,13 +389,14 @@ class _MainAppState extends State<MainApp> {
     List<Widget> finalList = [];
     list.forEach((element) {
       finalList.add(
-        TextButton(
-            onPressed: () {
-              onclick(element);
-            },
-            child: Text(
-              "$prefixText ${list.indexOf(element)}",
-            )),
+        ElevatedButton(
+          onPressed: () {
+            onclick(element);
+          },
+          child: Text(
+            "$prefixText ${list.indexOf(element) + 1}",
+          ),
+        ),
       );
     });
     return finalList;

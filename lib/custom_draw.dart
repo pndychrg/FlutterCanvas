@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 import 'asset_info_model.dart';
 
 class CustomTshirtWithSvgPaint extends StatelessWidget {
@@ -26,13 +23,25 @@ class CustomTshirtWithSvgPaint extends StatelessWidget {
   Widget build(BuildContext context) {
     double boxSize = MediaQuery.of(context).size.width / 2; // default is 400
     return Padding(
-      padding: const EdgeInsets.only(top: 80.0),
+      padding: const EdgeInsets.only(top: 40.0),
       child: Center(
         child: Container(
             height: boxSize,
             width: boxSize,
             decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 1)),
+              border: Border.all(color: Colors.black, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(10.2)),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(
+                      0.2), // Grey shadow color with subtle opacity
+                  spreadRadius: 1,
+                  blurRadius: 6,
+                  offset: Offset(0, 3), // Changes position of shadow
+                ),
+              ],
+            ),
             child: Stack(
               children: [
                 SvgPainterWithOffsetAndHeightPerc(
@@ -91,23 +100,24 @@ class SvgPainterWithOffsetAndHeightPerc extends StatelessWidget {
   final Color selectedColor;
   bool mirror = false;
 
-  Future<String?> getStringFuture() async {
-    try {
-      http.Response response = await http.get(Uri.parse(
-          "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg"));
-      print(
-          "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg");
-      if (response.statusCode == 200) {
-        print(response.body);
-        return response.body;
-      } else {
-        print(response.statusCode);
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
-  }
+  // function was used to fetch svgs from server ( deprecated )
+  // Future<String?> getStringFuture() async {
+  //   try {
+  //     http.Response response = await http.get(Uri.parse(
+  //         "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg"));
+  //     print(
+  //         "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg");
+  //     if (response.statusCode == 200) {
+  //       print(response.body);
+  //       return response.body;
+  //     } else {
+  //       print(response.statusCode);
+  //       return null;
+  //     }
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 
   Future<String?> getStringFromLocalFile() async {
     try {

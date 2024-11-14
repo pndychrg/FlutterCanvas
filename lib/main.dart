@@ -155,6 +155,9 @@ class _MainAppState extends State<MainApp> {
                                 });
                               }),
                             ),
+                            SizedBox(
+                              height: 10,
+                            ),
                             // Sleeves Selection Button
                             Wrap(
                               alignment: WrapAlignment.start,
@@ -185,80 +188,91 @@ class _MainAppState extends State<MainApp> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      // check if selectedElement is already Collor
-                                      if (checkIfElementIsSelected() &&
-                                          selectedElement!.contains(collor)) {
-                                        //   remove all selections
-                                        removeSelectedElements();
-                                      } else {
-                                        selectedElement = collor;
-                                        updateSelectedElement();
-                                      }
-                                    });
-                                  },
-                                  child: Text(collor,
-                                      style: TextStyle(
-                                        color: checkIfElementIsSelected()
-                                            ? (selectedElement!.contains(collor)
-                                                ? Colors.black
-                                                : Colors.grey)
-                                            : Colors.grey,
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        // check if selectedElement is already Collor
+                                        if (checkIfElementIsSelected() &&
+                                            selectedElement!.contains(collor)) {
+                                          //   remove all selections
+                                          removeSelectedElements();
+                                        } else {
+                                          selectedElement = collor;
+                                          updateSelectedElement();
+                                        }
+                                      });
+                                    },
+                                    child: Text(collor,
+                                        style: TextStyle(
+                                          color: checkIfElementIsSelected()
+                                              ? (selectedElement!
+                                                      .contains(collor)
+                                                  ? Colors.black
+                                                  : Colors.grey)
+                                              : Colors.grey,
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Expanded(
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (checkIfElementIsSelected() &&
+                                              selectedElement!
+                                                  .contains(torso)) {
+                                            //   remove all selections
+                                            removeSelectedElements();
+                                          } else {
+                                            selectedElement = torso;
+                                          }
+                                        });
+                                      },
+                                      child: Text(
+                                        torso,
+                                        style: TextStyle(
+                                          color: checkIfElementIsSelected()
+                                              ? (selectedElement!
+                                                      .contains(torso)
+                                                  ? Colors.black
+                                                  : Colors.grey)
+                                              : Colors.grey,
+                                        ),
                                       )),
                                 ),
                                 SizedBox(
                                   width: 30,
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        if (checkIfElementIsSelected() &&
-                                            selectedElement!.contains(torso)) {
-                                          //   remove all selections
-                                          removeSelectedElements();
-                                        } else {
-                                          selectedElement = torso;
-                                        }
-                                      });
-                                    },
-                                    child: Text(
-                                      torso,
-                                      style: TextStyle(
-                                        color: checkIfElementIsSelected()
-                                            ? (selectedElement!.contains(torso)
-                                                ? Colors.black
-                                                : Colors.grey)
-                                            : Colors.grey,
-                                      ),
-                                    )),
-                                SizedBox(
-                                  width: 30,
+                                Expanded(
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          if (checkIfElementIsSelected() &&
+                                              selectedElement!
+                                                  .contains(sleeve)) {
+                                            //   remove all selections
+                                            removeSelectedElements();
+                                          } else {
+                                            selectedElement = sleeve;
+                                            updateSelectedElement();
+                                          }
+                                        });
+                                      },
+                                      child: Text(
+                                        sleeve,
+                                        style: TextStyle(
+                                          color: checkIfElementIsSelected()
+                                              ? (selectedElement!
+                                                      .contains(sleeve)
+                                                  ? Colors.black
+                                                  : Colors.grey)
+                                              : Colors.grey,
+                                        ),
+                                      )),
                                 ),
-                                ElevatedButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        if (checkIfElementIsSelected() &&
-                                            selectedElement!.contains(sleeve)) {
-                                          //   remove all selections
-                                          removeSelectedElements();
-                                        } else {
-                                          selectedElement = sleeve;
-                                          updateSelectedElement();
-                                        }
-                                      });
-                                    },
-                                    child: Text(
-                                      sleeve,
-                                      style: TextStyle(
-                                        color: checkIfElementIsSelected()
-                                            ? (selectedElement!.contains(sleeve)
-                                                ? Colors.black
-                                                : Colors.grey)
-                                            : Colors.grey,
-                                      ),
-                                    )),
                               ],
                             ),
                           ],

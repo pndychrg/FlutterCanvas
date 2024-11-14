@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:human_canvas/constants.dart';
 
 class PositionInputForm extends StatefulWidget {
   final double initialDx;
@@ -78,23 +79,38 @@ class _PositionInputFormState extends State<PositionInputForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            child: TextFormField(
-              controller: _dXController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: "Enter DX"),
-              validator: _validateDouble,
-            ),
+          Text(
+            "• Enter Positions",
+            style: headingStyle.copyWith(fontSize: 15),
           ),
-          Expanded(
-            child: TextFormField(
-              controller: _dYController,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: "Enter DY"),
-              validator: _validateDouble,
-            ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _dXController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  decoration: inputDecoration,
+                  validator: _validateDouble,
+                ),
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Expanded(
+                child: TextFormField(
+                  controller: _dYController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  decoration: inputDecoration.copyWith(labelText: "Enter Dy"),
+                  validator: _validateDouble,
+                ),
+              ),
+            ],
           ),
         ],
       ),

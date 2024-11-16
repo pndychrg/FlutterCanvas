@@ -5,9 +5,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:human_canvas/services/file_service.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FilePickerWidget extends StatefulWidget {
   const FilePickerWidget({super.key});
@@ -18,9 +17,8 @@ class FilePickerWidget extends StatefulWidget {
 
 class _FilePickerWidgetState extends State<FilePickerWidget> {
   String _fileText = 'Pick a File';
-  File? _cachedFile;
   Uint8List? _svgBytes; //For storing SVG content on web
-
+  FileService fileService = FileService();
   void _pickFile() async {
     try {
       FilePickerResult? result = await FilePicker.platform
@@ -35,16 +33,23 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
           if (fileBytes != null) {
             // Web: Use bytes to handle file data
             String base64Data = base64Encode(fileBytes);
-            setLocalStorage(fileName, base64Data);
+            // fileService.saveSVGToLocalStorage(fileName, base64Data);
             setState(() {
               _fileText = 'SVG file loaded into memory: $fileName';
               _svgBytes = fileBytes; // Store in memory
             });
+
+            //   Testing code
+            String svgString = String.fromCharCodes(fileBytes);
+            // print(svgString);
+            bool isSaved =
+                await fileService.saveSVGToLocalStorage(fileName, svgString);
           }
           //    If you want to upload the file to server add the HTTP code here
         } else {
           // print("Web is not used");
           //   Non Web : Use 'Path' to get File path
+          //  WARNING : THIS CODE IS NOT YET TESTED SO IT MAY OR MAY NOT WORK
           String? filePath = result.files.single.path;
           if (filePath != null) {
             String tempPath = (await getTemporaryDirectory()).path;
@@ -55,7 +60,6 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
 
             setState(() {
               _fileText = 'Stored SVG in cache: $cachedFilePath';
-              _cachedFile = File(cachedFilePath);
             });
           }
         }
@@ -66,13 +70,6 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
         _fileText = 'Error: Could not load the file';
       });
     }
-  }
-
-  void setLocalStorage(String key, String value) async {
-    //   using Flutter's SharedPref package to save in local storage for web
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(key, value);
-    print("SharedPrefs ran");
   }
 
   @override

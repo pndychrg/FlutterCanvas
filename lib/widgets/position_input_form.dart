@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:human_canvas/constants.dart';
+import 'package:human_canvas/constants/constants.dart';
 
 class PositionInputForm extends StatefulWidget {
   final double initialDx;
   final double initialDy;
-  final Function(double, double) onValuesChanged;
-  const PositionInputForm(
-      {required this.initialDx,
-      required this.initialDy,
-      required this.onValuesChanged});
+  final double initialAssetHeightRespToBox;
+  final Function(double, double, double) onValuesChanged;
+  const PositionInputForm({
+    required this.initialDx,
+    required this.initialDy,
+    required this.initialAssetHeightRespToBox,
+    required this.onValuesChanged,
+  });
 
   @override
   State<PositionInputForm> createState() => _PositionInputFormState();
@@ -18,14 +21,16 @@ class _PositionInputFormState extends State<PositionInputForm> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _dXController;
   late TextEditingController _dYController;
-
+  late TextEditingController _assetHeightRespToBoxController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    print("${widget.initialDx} ${widget.initialDy} in form");
+    // print("${widget.initialDx} ${widget.initialDy} in form");
     _dXController = TextEditingController(text: widget.initialDx.toString());
     _dYController = TextEditingController(text: widget.initialDy.toString());
+    _assetHeightRespToBoxController = TextEditingController(
+        text: widget.initialAssetHeightRespToBox.toString());
     //   adding listeners to controllers to trigger auto-submit
     _dXController.addListener(_autoSubmitForm);
     _dYController.addListener(_autoSubmitForm);
@@ -37,9 +42,13 @@ class _PositionInputFormState extends State<PositionInputForm> {
 
     // Update controllers when initialDx or initialDy changes
     if (widget.initialDx != double.tryParse(_dXController.text) ||
-        widget.initialDy != double.tryParse(_dYController.text)) {
+        widget.initialDy != double.tryParse(_dYController.text) ||
+        widget.initialAssetHeightRespToBox !=
+            double.tryParse(_assetHeightRespToBoxController.text)) {
       _dXController.text = widget.initialDx.toString();
       _dYController.text = widget.initialDy.toString();
+      _assetHeightRespToBoxController.text =
+          widget.initialAssetHeightRespToBox.toString();
     }
   }
 
@@ -47,8 +56,10 @@ class _PositionInputFormState extends State<PositionInputForm> {
   void dispose() {
     _dXController.removeListener(_autoSubmitForm);
     _dYController.removeListener(_autoSubmitForm);
+    _assetHeightRespToBoxController.removeListener(_autoSubmitForm);
     _dXController.dispose();
     _dYController.dispose();
+    _assetHeightRespToBoxController.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -57,9 +68,11 @@ class _PositionInputFormState extends State<PositionInputForm> {
     if (_formKey.currentState?.validate() ?? false) {
       double dx = double.parse(_dXController.text);
       double dy = double.parse(_dYController.text);
-
-      print("Double Value DX: $dx \nDouble Value DY : $dy");
-      widget.onValuesChanged(dx, dy);
+      double assetHeightRespToBox =
+          double.parse(_assetHeightRespToBoxController.text);
+      print(
+          "Double Value DX: $dx \nDouble Value DY : $dy\n Asset Height Respect to Box : $assetHeightRespToBox");
+      widget.onValuesChanged(dx, dy, assetHeightRespToBox);
     }
   }
 
@@ -111,6 +124,16 @@ class _PositionInputFormState extends State<PositionInputForm> {
                 ),
               ),
             ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            controller: _assetHeightRespToBoxController,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            decoration: inputDecoration.copyWith(
+                labelText: "Enter Asset Height Respective to Box"),
+            validator: _validateDouble,
           ),
         ],
       ),

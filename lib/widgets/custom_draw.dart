@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'asset_info_model.dart';
+import 'package:human_canvas/widgets/svg_painter_with_offset_and_heightPerc.dart';
+import '../models/asset_info_model.dart';
 
 class CustomTshirtWithSvgPaint extends StatelessWidget {
   const CustomTshirtWithSvgPaint(
@@ -79,73 +78,6 @@ class CustomTshirtWithSvgPaint extends StatelessWidget {
                 ),
               ],
             )),
-      ),
-    );
-  }
-}
-
-class SvgPainterWithOffsetAndHeightPerc extends StatelessWidget {
-  SvgPainterWithOffsetAndHeightPerc(
-      {super.key,
-      required this.boxSize,
-      required this.dX,
-      required this.dY,
-      required this.assetName,
-      required this.selectedColor,
-      required this.assetHeightRespToBox,
-      this.mirror = false});
-
-  final double boxSize, assetHeightRespToBox, dY, dX;
-  final String assetName;
-  final Color selectedColor;
-  bool mirror = false;
-
-  // function was used to fetch svgs from server ( deprecated )
-  // Future<String?> getStringFuture() async {
-  //   try {
-  //     http.Response response = await http.get(Uri.parse(
-  //         "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg"));
-  //     print(
-  //         "https://leaderboard.sagarfab.com/uploads/add_on/image/623/Frame185.svg");
-  //     if (response.statusCode == 200) {
-  //       print(response.body);
-  //       return response.body;
-  //     } else {
-  //       print(response.statusCode);
-  //       return null;
-  //     }
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
-
-  Future<String?> getStringFromLocalFile() async {
-    try {
-      final String svgString = await rootBundle.loadString(assetName);
-      // print(svgString);
-      return svgString;
-    } catch (e) {
-      print("Error Loading svg file:$e");
-      return null;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Transform.scale(
-      scaleX: mirror ? -1 : 1,
-      child: Transform.translate(
-        offset: Offset(boxSize * dX, boxSize * dY),
-        child: FutureBuilder<String?>(
-            future: getStringFromLocalFile(),
-            builder: (context, snapshot) {
-              return SvgPicture.string(
-                snapshot.data?.replaceAll("#FFFFFF",
-                        '#${selectedColor.value.toRadixString(16).substring(2)}') ??
-                    "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1 1\"></svg>",
-                height: boxSize / assetHeightRespToBox,
-              );
-            }),
       ),
     );
   }

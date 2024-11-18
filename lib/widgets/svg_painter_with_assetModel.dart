@@ -8,11 +8,13 @@ class SvgPainterWithAssetModel extends StatefulWidget {
   final Color selectedColor;
   final double boxSize;
   bool mirror = false;
-  SvgPainterWithAssetModel(
-      {required this.assetInfoModel,
-      super.key,
-      required this.selectedColor,
-      required this.boxSize});
+  SvgPainterWithAssetModel({
+    required this.assetInfoModel,
+    super.key,
+    required this.selectedColor,
+    required this.boxSize,
+    required this.mirror,
+  });
 
   @override
   State<SvgPainterWithAssetModel> createState() =>
@@ -23,9 +25,9 @@ class _SvgPainterWithAssetModelState extends State<SvgPainterWithAssetModel> {
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scaleX: widget.assetInfoModel.isMirror ? -1 : 1,
+      scaleX: widget.mirror ? -1 : 1,
       child: Transform.translate(
-          offset: widget.assetInfoModel.isMirror
+          offset: widget.mirror
               ? Offset(widget.boxSize * widget.assetInfoModel.mirrorDX!,
                   widget.boxSize * widget.assetInfoModel.dY)
               : Offset(widget.boxSize * widget.assetInfoModel.dX,

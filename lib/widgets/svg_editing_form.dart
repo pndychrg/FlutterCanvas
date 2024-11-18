@@ -27,7 +27,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
   // bool _isUpdatingProgrammatically = false; //Flag to prevent auto-submit
   Timer? _debounceTimer;
   Color selectedColor = Colors.white; // default white
-  bool isMirror = false;
+  // bool isMirror = false;
   // String? _svgDataString;
   // String? _svgFileName;
   // void _pickFile() async {
@@ -63,7 +63,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
     if (widget.selectedAssetInfoModel != null) {
       selectedColor = widget.selectedAssetInfoModel!.color;
     }
-    isMirror = widget.selectedAssetInfoModel?.isMirror ?? false;
+    // isMirror = widget.selectedAssetInfoModel?.isMirror ?? false;
 
     // Add listeners
     _addListeners();
@@ -82,7 +82,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
       _mirrorDXController.text =
           widget.selectedAssetInfoModel!.mirrorDX.toString();
       selectedColor = widget.selectedAssetInfoModel!.color; // Update color
-      isMirror = widget.selectedAssetInfoModel?.isMirror ?? false;
+      // isMirror = widget.selectedAssetInfoModel?.isMirror ?? false;
     }
   }
 
@@ -131,7 +131,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
           svgDataString: widget.selectedAssetInfoModel!.svgDataString,
           assetName: widget.selectedAssetInfoModel!.assetName ?? 'No Name',
           color: selectedColor,
-          isMirror: isMirror,
+          // isMirror: isMirror,
         );
         bool isSaved = await fileService
             .updateSVGAssetModelByKey(assetInfoModelFromFormData);
@@ -177,7 +177,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     ),
                     keyboardType: TextInputType.number,
                     validator: _validateDouble,
-                    enabled: isMirror == false,
+                    // enabled: isMirror == false,
                     onChanged: (value) {
                       double parsedValue = double.tryParse(value) ?? 0.0;
                       parsedValue = parsedValue.clamp(-0.50, 1.0);
@@ -194,14 +194,12 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     max: 1.0,
                     divisions: 200,
                     label: _dXController.text,
-                    onChanged: isMirror == false
-                        ? (value) {
-                            setState(() {
-                              _dXController.text = value.toStringAsFixed(2);
-                            });
-                            _onValueChanged();
-                          }
-                        : null,
+                    onChanged: (value) {
+                      setState(() {
+                        _dXController.text = value.toStringAsFixed(2);
+                      });
+                      _onValueChanged();
+                    },
                   ),
                 ),
               ],
@@ -256,7 +254,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     ),
                     keyboardType: TextInputType.number,
                     validator: _validateDouble,
-                    enabled: isMirror,
+                    // enabled: isMirror,
                     onChanged: (value) {
                       double parsedValue = double.tryParse(value) ?? 0.0;
                       parsedValue = parsedValue.clamp(-1.0, 1.0);
@@ -273,15 +271,12 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     max: 1.0,
                     divisions: 200,
                     label: _mirrorDXController.text,
-                    onChanged: isMirror
-                        ? (value) {
-                            setState(() {
-                              _mirrorDXController.text =
-                                  value.toStringAsFixed(2);
-                            });
-                            _onValueChanged();
-                          }
-                        : null,
+                    onChanged: (value) {
+                      setState(() {
+                        _mirrorDXController.text = value.toStringAsFixed(2);
+                      });
+                      _onValueChanged();
+                    },
                   ),
                 ),
               ],
@@ -325,22 +320,6 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       _onValueChanged();
                     },
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Is Mirror", style: TextStyle(fontSize: 16)),
-                Switch(
-                  value: isMirror,
-                  onChanged: (bool value) {
-                    setState(() {
-                      isMirror = value;
-                    });
-                    _onValueChanged();
-                  },
                 ),
               ],
             ),

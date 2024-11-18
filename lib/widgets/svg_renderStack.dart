@@ -19,10 +19,29 @@ class _SVGRenderStackState extends State<SVGRenderStack> {
     List<SvgPainterWithAssetModel> svgStackChildrenList = [];
     widget.svgListFromLocalStorage.forEach((assetInfoModel) {
       if (assetInfoModel != null) {
-        svgStackChildrenList.add(SvgPainterWithAssetModel(
+        // checking if the mirrorDx value is set to -1
+        if (assetInfoModel.mirrorDX == -1) {
+          svgStackChildrenList.add(SvgPainterWithAssetModel(
             assetInfoModel: assetInfoModel,
             selectedColor: Colors.white,
-            boxSize: boxSize));
+            boxSize: boxSize,
+            mirror: false,
+          ));
+        } else {
+          // adding it two times as left and mirrored right
+          svgStackChildrenList.add(SvgPainterWithAssetModel(
+            assetInfoModel: assetInfoModel,
+            selectedColor: Colors.white,
+            boxSize: boxSize,
+            mirror: false,
+          ));
+          svgStackChildrenList.add(SvgPainterWithAssetModel(
+            assetInfoModel: assetInfoModel,
+            selectedColor: Colors.white,
+            boxSize: boxSize,
+            mirror: true,
+          ));
+        }
       }
     });
     return Padding(

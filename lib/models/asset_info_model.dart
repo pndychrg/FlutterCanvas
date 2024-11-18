@@ -5,12 +5,12 @@ class AssetInfoModel {
   // assetLocation is nullable as asset is fetched from localStorage, so path is not required for web
   String? assetLocation;
   double dX, dY;
-  double? mirrorDX;
+  double? mirrorDX = -1;
   double assetHeightRespToBox;
   String? svgDataString;
   String assetName;
   Color color;
-  bool isMirror = false;
+  // bool isMirror = false;
   AssetInfoModel({
     this.assetLocation,
     required this.assetHeightRespToBox,
@@ -20,7 +20,7 @@ class AssetInfoModel {
     required this.svgDataString,
     required this.assetName,
     required this.color,
-    required this.isMirror,
+    // required this.isMirror,
   });
   // Helper function to convert Color to Hex string
   static String colorToHexString(Color color) {
@@ -40,19 +40,19 @@ class AssetInfoModel {
     // all null checks should be performed before running this function
     // as it is a factory function so null checks can't be performed here
     return AssetInfoModel(
-        assetLocation: json['assetLocation']!,
-        assetHeightRespToBox: double.parse(json['assetHeightRespToBox']!),
-        dX: double.parse(json['dX']!),
-        dY: double.parse(json['dY']!),
-        mirrorDX: double.parse(json['mirrorDX']!),
-        assetName: json['assetName'],
-        // svgDataString: utf8.decode(
-        //   base64Decode(json['svgDataString']!),
-        // ),
-        svgDataString: json['svgDataString'],
-        color: hexStringToColor(json['color'] ?? '#FFFFFFFF'),
-        isMirror: bool.parse(json['isMirror']) // Default to white if missing
-        );
+      assetLocation: json['assetLocation']!,
+      assetHeightRespToBox: double.parse(json['assetHeightRespToBox']!),
+      dX: double.parse(json['dX']!),
+      dY: double.parse(json['dY']!),
+      mirrorDX: double.parse(json['mirrorDX']!),
+      assetName: json['assetName'],
+      // svgDataString: utf8.decode(
+      //   base64Decode(json['svgDataString']!),
+      // ),
+      svgDataString: json['svgDataString'],
+      color: hexStringToColor(json['color'] ?? '#FFFFFFFF'),
+      // isMirror: bool.parse(json['isMirror']) // Default to white if missing
+    );
   }
 
   Map<String, String> toJson() {
@@ -65,7 +65,7 @@ class AssetInfoModel {
       'svgDataString': svgDataString.toString(),
       'assetName': assetName,
       'color': colorToHexString(color),
-      'isMirror': isMirror.toString(), // Save color as hex string
+      // 'isMirror': isMirror.toString(), // Save color as hex string
     };
   }
 }

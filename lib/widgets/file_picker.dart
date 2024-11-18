@@ -41,11 +41,11 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
               assetHeightRespToBox: 3.125,
               dY: 0.125,
               dX: 0.125,
-              mirrorDX: 0,
+              mirrorDX: -1,
               svgDataString: svgString,
               assetName: fileName,
               color: Colors.white,
-              isMirror: false,
+              // isMirror: false,
             );
             print("tempAssetInfoModel made");
             bool isSaved =

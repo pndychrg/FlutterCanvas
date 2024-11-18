@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:ui';
 
 class AssetInfoModel {
   // Specific to WEB
@@ -9,6 +9,8 @@ class AssetInfoModel {
   double assetHeightRespToBox;
   String? svgDataString;
   String assetName;
+  Color color;
+  bool isMirror = false;
   AssetInfoModel({
     this.assetLocation,
     required this.assetHeightRespToBox,
@@ -17,7 +19,21 @@ class AssetInfoModel {
     required this.mirrorDX,
     required this.svgDataString,
     required this.assetName,
+    required this.color,
+    required this.isMirror,
   });
+  // Helper function to convert Color to Hex string
+  static String colorToHexString(Color color) {
+    return '#${color.value.toRadixString(16).padLeft(8, '0')}';
+  }
+
+  // Helper function to convert Hex string to Color
+  static Color hexStringToColor(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
 
   factory AssetInfoModel.fromJson(Map<String, dynamic> json) {
     // every thing is forced to not be null, so take care if any null values are provided
@@ -33,7 +49,10 @@ class AssetInfoModel {
         // svgDataString: utf8.decode(
         //   base64Decode(json['svgDataString']!),
         // ),
-        svgDataString: json['svgDataString']);
+        svgDataString: json['svgDataString'],
+        color: hexStringToColor(json['color'] ?? '#FFFFFFFF'),
+        isMirror: bool.parse(json['isMirror']) // Default to white if missing
+        );
   }
 
   Map<String, String> toJson() {
@@ -45,6 +64,8 @@ class AssetInfoModel {
       'assetHeightRespToBox': assetHeightRespToBox.toString(),
       'svgDataString': svgDataString.toString(),
       'assetName': assetName,
+      'color': colorToHexString(color),
+      'isMirror': isMirror.toString(), // Save color as hex string
     };
   }
 }

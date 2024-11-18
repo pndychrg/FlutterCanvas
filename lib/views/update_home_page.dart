@@ -91,7 +91,8 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
                       if (isSaved) {
                         updateSvgList();
                         ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("SVG Asset added!")));
+                            const SnackBar(
+                                content: Text("SVG Asset Updated!")));
                       }
                     },
                   ),

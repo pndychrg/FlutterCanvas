@@ -26,24 +26,28 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
       if (result != null && result.files.isNotEmpty) {
         String fileName = result.files.single.name;
         // Check if the platform is web
+        // Web: Use bytes to handle file data
         if (kIsWeb) {
           // print("Web is used");
           //    Web: use 'bytes' to handle file data
           Uint8List? fileBytes = result.files.single.bytes;
           if (fileBytes != null) {
-            // Web: Use bytes to handle file data
-            String base64Data = base64Encode(fileBytes);
             // fileService.saveSVGToLocalStorage(fileName, base64Data);
             //   Testing code
             String svgString = String.fromCharCodes(fileBytes);
-            // print(svgString);
+            // print()
+            print(svgString);
             AssetInfoModel tempAssetInfoModel = AssetInfoModel(
-                assetHeightRespToBox: 3.125,
-                dY: 0.125,
-                dX: 0.125,
-                mirrorDX: 0,
-                svgDataString: svgString,
-                assetName: fileName);
+              assetHeightRespToBox: 3.125,
+              dY: 0.125,
+              dX: 0.125,
+              mirrorDX: 0,
+              svgDataString: svgString,
+              assetName: fileName,
+              color: Colors.white,
+              isMirror: false,
+            );
+            print("tempAssetInfoModel made");
             bool isSaved =
                 await fileService.saveSVGToLocalStorage(tempAssetInfoModel);
             if (isSaved) {
@@ -67,7 +71,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
         }
       }
     } catch (e) {
-      print("Error occured $e");
+      print("Error occured in FilePicker file$e");
     }
   }
 

@@ -285,28 +285,28 @@
 //               Opacity(
 //                 opacity: selectedElement == null ? 0.5 : 1.0,
 //                 child: IgnorePointer(
-//                   ignoring: selectedElement == null,
-//                   child: MaterialColorPicker(
-//                     selectedColor: null,
-//                     onColorChange: (Color color) {
-//                       setState(() {
-//                         if (checkIfElementIsSelected() &&
-//                             selectedElement!.contains(collor)) {
-//                           collorColor = color;
-//                           print('collor color $collorColor');
-//                         } else if (checkIfElementIsSelected() &&
-//                             selectedElement!.contains(sleeve)) {
-//                           sleeveColor = color;
-//                           print('sleeve color $sleeveColor');
-//                         } else {
-//                           tShirtColor = color;
-//                           print('tshirt color $tShirtColor');
-//                         }
-//                       });
-//                     },
-//                   ),
-//                 ),
-//               ),
+//     ignoring: selectedElement == null,
+//     child: MaterialColorPicker(
+//       selectedColor: null,
+//       onColorChange: (Color color) {
+//         setState(() {
+//           if (checkIfElementIsSelected() &&
+//               selectedElement!.contains(collor)) {
+//             collorColor = color;
+//             print('collor color $collorColor');
+//           } else if (checkIfElementIsSelected() &&
+//               selectedElement!.contains(sleeve)) {
+//             sleeveColor = color;
+//             print('sleeve color $sleeveColor');
+//           } else {
+//             tShirtColor = color;
+//             print('tshirt color $tShirtColor');
+//           }
+//         });
+//       },
+//     ),
+//   ),
+// ),
 //               SizedBox(
 //                 height: 10,
 //               ),

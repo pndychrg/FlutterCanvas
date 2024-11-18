@@ -16,20 +16,23 @@ class SvgPainterWithAssetModel extends StatefulWidget {
 
   @override
   State<SvgPainterWithAssetModel> createState() =>
-      _SvgPainterWithAssetmodelState();
+      _SvgPainterWithAssetModelState();
 }
 
-class _SvgPainterWithAssetmodelState extends State<SvgPainterWithAssetModel> {
+class _SvgPainterWithAssetModelState extends State<SvgPainterWithAssetModel> {
   @override
   Widget build(BuildContext context) {
     return Transform.scale(
-      scaleX: widget.mirror ? -1 : 1,
+      scaleX: widget.assetInfoModel.isMirror ? -1 : 1,
       child: Transform.translate(
-          offset: Offset(widget.boxSize * widget.assetInfoModel.dX,
-              widget.boxSize * widget.assetInfoModel.dY),
+          offset: widget.assetInfoModel.isMirror
+              ? Offset(widget.boxSize * widget.assetInfoModel.mirrorDX!,
+                  widget.boxSize * widget.assetInfoModel.dY)
+              : Offset(widget.boxSize * widget.assetInfoModel.dX,
+                  widget.boxSize * widget.assetInfoModel.dY),
           child: SvgPicture.string(
             widget.assetInfoModel.svgDataString?.replaceAll("#FFFFFF",
-                    '#${widget.selectedColor.value.toRadixString(16).substring(2)}') ??
+                    '#${widget.assetInfoModel.color.value.toRadixString(16).substring(2)}') ??
                 "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1 1\"></svg>",
             height: widget.boxSize / widget.assetInfoModel.assetHeightRespToBox,
           )),

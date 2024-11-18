@@ -36,7 +36,7 @@ class FileService {
       prefs.setString("svg_list", jsonEncode(svgList));
       return true;
     } catch (e) {
-      print("$e");
+      print("Error Occured While adding SVG :$e");
       return false;
     }
   }

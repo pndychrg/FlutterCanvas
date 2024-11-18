@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:human_canvas/models/asset_info_model.dart';
 import 'package:human_canvas/services/file_service.dart';
@@ -28,9 +27,9 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
     });
   }
 
-  void updateSelectedSVGModel(AssetInfoModel selectedSVGModelfromList) {
+  void updateSelectedSVGModel(AssetInfoModel selectedSVGModeFromList) {
     setState(() {
-      selectedSVGAssetModel = selectedSVGModelfromList;
+      selectedSVGAssetModel = selectedSVGModeFromList;
     });
   }
 
@@ -39,6 +38,12 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
     if (isDeleted) {
       updateSvgList();
     }
+  }
+
+  void updateSVGListPositions(List<AssetInfoModel?> updatedList) {
+    setState(() {
+      svgListFromLocalStorage = updatedList;
+    });
   }
 
   @override
@@ -85,6 +90,7 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
                   svgListFromLocalStorage: svgListFromLocalStorage,
                   updateSelectedSVGAssetModel: updateSelectedSVGModel,
                   deleteSelectedSVGAssetModel: deleteSelectedSVGModel,
+                  updateListInParent: updateSVGListPositions,
                 ),
               ],
             )),

@@ -34,6 +34,13 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
     });
   }
 
+  void deleteSelectedSVGModel(String assetModelName) async {
+    bool isDeleted = await fileService.removeSvgByKey(assetModelName);
+    if (isDeleted) {
+      updateSvgList();
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -77,6 +84,7 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
                 SVGList(
                   svgListFromLocalStorage: svgListFromLocalStorage,
                   updateSelectedSVGAssetModel: updateSelectedSVGModel,
+                  deleteSelectedSVGAssetModel: deleteSelectedSVGModel,
                 ),
               ],
             )),

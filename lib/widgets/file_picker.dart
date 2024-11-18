@@ -36,7 +36,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
             //   Testing code
             String svgString = String.fromCharCodes(fileBytes);
             // print()
-            print(svgString);
+            // print(svgString);
             AssetInfoModel tempAssetInfoModel = AssetInfoModel(
               assetHeightRespToBox: 3.125,
               dY: 0.125,
@@ -47,7 +47,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
               color: Colors.white,
               // isMirror: false,
             );
-            print("tempAssetInfoModel made");
+            // print("tempAssetInfoModel made");
             bool isSaved =
                 await fileService.saveSVGToLocalStorage(tempAssetInfoModel);
             if (isSaved) {

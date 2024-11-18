@@ -124,19 +124,20 @@ class FileService {
   Future<bool> removeSvgByKey(String svgKey) async {
     try {
       SharedPreferences prefs = await getSharedInstance();
-
-      // Retrieve the SVG map
-      String? existingData = prefs.getString(listKey);
-      if (existingData != null) {
-        Map<String, String> svgMap =
-            Map<String, String>.from(jsonDecode(existingData));
-        svgMap.remove(svgKey);
-
-        // Save the updated map back to local storage
-        prefs.setString(listKey, jsonEncode(svgMap));
-        return true;
+      //   checking if the svg file name exists in svg file
+      List svgList = await getSVGListasStringFromLocalStorage();
+      //   removing the svgKey from svgList
+      bool isStringRemoved = svgList.remove(svgKey);
+      // updating the svgList
+      if (isStringRemoved) {
+        await prefs.setString(listKey, jsonEncode(svgList));
       }
-      return false;
+      bool isSVGAssetRemoved = await prefs.remove(svgKey);
+      if (isStringRemoved && isSVGAssetRemoved) {
+        return true;
+      } else {
+        throw Exception("Something happened while removing svg Key");
+      }
     } catch (e) {
       print("Error removing SVG by key: $e");
       return false;

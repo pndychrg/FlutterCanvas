@@ -4,10 +4,12 @@ import 'package:human_canvas/models/asset_info_model.dart';
 class SVGList extends StatefulWidget {
   final List<AssetInfoModel?> svgListFromLocalStorage;
   final Function(AssetInfoModel) updateSelectedSVGAssetModel;
+  final Function(String) deleteSelectedSVGAssetModel;
   const SVGList({
     super.key,
     required this.svgListFromLocalStorage,
     required this.updateSelectedSVGAssetModel,
+    required this.deleteSelectedSVGAssetModel,
   });
 
   @override
@@ -27,10 +29,26 @@ class _SVGListState extends State<SVGList> {
               if (assetInfoModel != null) {
                 return ListTile(
                   title: Text(assetInfoModel.assetName),
-                  trailing: IconButton(
-                    onPressed: () =>
-                        widget.updateSelectedSVGAssetModel(assetInfoModel),
-                    icon: Icon(Icons.edit),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () => widget.deleteSelectedSVGAssetModel(
+                            assetInfoModel.assetName),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () =>
+                            widget.updateSelectedSVGAssetModel(assetInfoModel),
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ],
                   ),
                 );
               }

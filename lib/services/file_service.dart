@@ -41,7 +41,24 @@ class FileService {
     }
   }
 
-  // Fetch the entire list of SVGs as a map
+  Future<List> getSVGListasStringFromLocalStorage() async {
+    try {
+      SharedPreferences prefs = await getSharedInstance();
+      String? svgList = prefs.getString(listKey);
+      if (svgList != null) {
+        List decodedSVGList = jsonDecode(svgList).toList();
+        return decodedSVGList;
+      } else {
+        return [];
+      }
+    } catch (e) {
+      print(
+          "Error occured while fetching SVGListAsSTring from localstorage :$e");
+      return [];
+    }
+  }
+
+  // Fetch the entire list of SVGs as a AssetModel
   Future<List<AssetInfoModel?>> getSVGListFromLocalStorage() async {
     List<AssetInfoModel?> svgAssetList = [];
     try {
@@ -62,6 +79,24 @@ class FileService {
     } catch (e) {
       print("Error retrieving SVG list: $e");
       return svgAssetList;
+    }
+  }
+
+  Future<bool> updateSVGAssetModelByKey(AssetInfoModel currentModel) async {
+    try {
+      SharedPreferences prefs = await getSharedInstance();
+      //   check if svg exists in the svgList
+      List svgList = await getSVGListasStringFromLocalStorage();
+      if (svgList.isNotEmpty && svgList.contains(currentModel.assetName)) {
+        prefs.setString(
+            currentModel.assetName, jsonEncode(currentModel.toJson()));
+        return true;
+      } else {
+        throw Exception("SVGList Came Empty from localStorage");
+      }
+    } catch (e) {
+      print("Error occured while updating : $e");
+      return false;
     }
   }
 

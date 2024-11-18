@@ -19,11 +19,11 @@ class SVGEditingForm extends StatefulWidget {
 
 class _SVGEditingFormState extends State<SVGEditingForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _dXController = TextEditingController();
-  final TextEditingController _dYController = TextEditingController();
-  final TextEditingController _mirrorDXController = TextEditingController();
-  final TextEditingController _assetHeightRespToBoxController =
-      TextEditingController();
+  late TextEditingController _dXController;
+  late TextEditingController _dYController;
+  late TextEditingController _mirrorDXController;
+  late TextEditingController _assetHeightRespToBoxController;
+  bool _isUpdatingProgrammatically = false; //Flag to prevent auto-submit
   // String? _svgDataString;
   // String? _svgFileName;
   // void _pickFile() async {
@@ -43,6 +43,74 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
   //     print("Error Occured while Picking file $e");
   //   }
   // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // print("${widget.initialDx} ${widget.initialDy} in form");
+    _initializeControllers();
+    //   adding listeners to controllers to trigger auto-submit
+    _dXController.addListener(_saveAssetInfo);
+    _dYController.addListener(_saveAssetInfo);
+    _assetHeightRespToBoxController.addListener(_saveAssetInfo);
+    _mirrorDXController.addListener(_saveAssetInfo);
+  }
+
+  @override
+  void didUpdateWidget(SVGEditingForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Update controllers when initialDx or initialDy changes
+    // if (widget.selectedAssetInfoModel?.dX !=
+    //         double.tryParse(_dXController.text) ||
+    //     widget.selectedAssetInfoModel?.dY !=
+    //         double.tryParse(_dYController.text) ||
+    //     widget.selectedAssetInfoModel?.assetHeightRespToBox !=
+    //         double.tryParse(_assetHeightRespToBoxController.text) ||
+    //     widget.selectedAssetInfoModel?.mirrorDX !=
+    //         double.tryParse(_mirrorDXController.text)) {
+    //   _dXController.text = widget.selectedAssetInfoModel!.dX.toString();
+    //   _dYController.text = widget.selectedAssetInfoModel!.dY.toString();
+    //   _assetHeightRespToBoxController.text =
+    //       widget.selectedAssetInfoModel!.assetHeightRespToBox.toString();
+    //   _mirrorDXController.text =
+    //       widget.selectedAssetInfoModel!.mirrorDX.toString();
+    // }
+    // Check if selectedAssetInfoModel has changed
+    if (widget.selectedAssetInfoModel != oldWidget.selectedAssetInfoModel) {
+      _isUpdatingProgrammatically = true;
+      _initializeControllers();
+      _isUpdatingProgrammatically = false;
+    }
+  }
+
+  void _initializeControllers() {
+    // Initialize or update the controllers with the selected asset's data
+    _dXController = TextEditingController(
+        text: widget.selectedAssetInfoModel?.dX?.toString() ?? '');
+    _dYController = TextEditingController(
+        text: widget.selectedAssetInfoModel?.dY?.toString() ?? '');
+    _assetHeightRespToBoxController = TextEditingController(
+        text: widget.selectedAssetInfoModel?.assetHeightRespToBox?.toString() ??
+            '');
+    _mirrorDXController = TextEditingController(
+        text: widget.selectedAssetInfoModel?.mirrorDX?.toString() ?? '');
+  }
+
+  @override
+  void dispose() {
+    _dXController.removeListener(_saveAssetInfo);
+    _dYController.removeListener(_saveAssetInfo);
+    _assetHeightRespToBoxController.removeListener(_saveAssetInfo);
+    _mirrorDXController.removeListener(_saveAssetInfo);
+    _dXController.dispose();
+    _dYController.dispose();
+    _assetHeightRespToBoxController.dispose();
+    _mirrorDXController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   void _saveAssetInfo() async {
     FileService fileService = FileService();
@@ -90,39 +158,6 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text("Edit SVG Form"),
-            // this row is to pick the svg file
-            // Container(
-            //     padding: const EdgeInsets.all(10),
-            //     decoration: BoxDecoration(
-            //       border: Border.all(color: Colors.black, width: 1),
-            //       borderRadius: BorderRadius.all(Radius.circular(10)),
-            //     ),
-            //     child: Column(
-            //       mainAxisSize: MainAxisSize.min,
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Text(
-            //           "Select SVG File",
-            //           style: headingStyle,
-            //         ),
-            //         Row(
-            //           mainAxisSize: MainAxisSize.min,
-            //           children: [
-            //             ElevatedButton(
-            //                 onPressed: _pickFile,
-            //                 child: Text("Pick a SVG File ")),
-            //             SizedBox(
-            //               width: 10,
-            //             ),
-            //             Text(
-            //               "File Name : ${_svgFileName ?? 'Not Picked Yet'}",
-            //               style: TextStyle(
-            //                   fontWeight: FontWeight.w300, fontSize: 15),
-            //             ),
-            //           ],
-            //         ),
-            //       ],
-            //     )),
             const SizedBox(
               height: 10,
             ),

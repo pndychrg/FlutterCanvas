@@ -12,10 +12,9 @@ class FileService {
     return prefs;
   }
 
-  Future<bool> saveSVGToLocalStorage(String key, String value) async {
+  Future<bool> saveSVGToLocalStorage(AssetInfoModel assetInfoModel) async {
     try {
       SharedPreferences prefs = await getSharedInstance();
-
       //   Retrieve the current list of SVGS as a map
       String? existingData = prefs.getString(listKey);
       // Map<String, String> svgMap = existingData != null
@@ -25,20 +24,12 @@ class FileService {
           ? List<String>.from(jsonDecode(existingData))
           : [];
       //   Add or update the SVG in the list
-      svgList.add(key);
+      svgList.add(assetInfoModel.assetName);
       // saving the svg's asset model as a different map with the asssetName as the key
-      AssetInfoModel assetInfoModel = AssetInfoModel(
-        assetHeightRespToBox: 1,
-        dY: 1,
-        dX: 1,
-        mirrorDX: 1,
-        // svgDataString: base64Encode(
-        //   utf8.encode(value),
-        // ),
-        svgDataString: value,
-      );
+
       // saving this AssetInfoModel as a Map in the local Storage
-      prefs.setString(key, jsonEncode(assetInfoModel.toJson()));
+      prefs.setString(
+          assetInfoModel.assetName, jsonEncode(assetInfoModel.toJson()));
       // prefs.setString(key, assetInfoModel.toJson().toString());
       // svgMap[key] = value;
       //    Save the updated Map back to local Storage

@@ -8,7 +8,7 @@ class AssetInfoModel {
   double? mirrorDX;
   double assetHeightRespToBox;
   String? svgDataString;
-
+  String assetName;
   AssetInfoModel({
     this.assetLocation,
     required this.assetHeightRespToBox,
@@ -16,6 +16,7 @@ class AssetInfoModel {
     required this.dX,
     required this.mirrorDX,
     required this.svgDataString,
+    required this.assetName,
   });
 
   factory AssetInfoModel.fromJson(Map<String, dynamic> json) {
@@ -28,6 +29,7 @@ class AssetInfoModel {
         dX: double.parse(json['dX']!),
         dY: double.parse(json['dY']!),
         mirrorDX: double.parse(json['mirrorDX']!),
+        assetName: json['assetName'],
         // svgDataString: utf8.decode(
         //   base64Decode(json['svgDataString']!),
         // ),
@@ -42,6 +44,7 @@ class AssetInfoModel {
       'mirrorDX': mirrorDX.toString(),
       'assetHeightRespToBox': assetHeightRespToBox.toString(),
       'svgDataString': svgDataString.toString(),
+      'assetName': assetName,
     };
   }
 }

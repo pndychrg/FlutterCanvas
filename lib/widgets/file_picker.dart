@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:human_canvas/services/file_service.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -42,8 +41,8 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
             //   Testing code
             String svgString = String.fromCharCodes(fileBytes);
             // print(svgString);
-            bool isSaved =
-                await fileService.saveSVGToLocalStorage(fileName, svgString);
+            // bool isSaved =
+            //     await fileService.saveSVGToLocalStorage(fileName, svgString);
           }
           //    If you want to upload the file to server add the HTTP code here
         } else {

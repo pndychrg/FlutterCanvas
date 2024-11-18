@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:human_canvas/models/asset_info_model.dart';
 import 'package:human_canvas/widgets/svg_painter_with_assetModel.dart';
 
-class SVGList extends StatefulWidget {
+class SVGRenderStack extends StatefulWidget {
   final List<AssetInfoModel?> svgListFromLocalStorage;
-  const SVGList({super.key, required this.svgListFromLocalStorage});
+  const SVGRenderStack({super.key, required this.svgListFromLocalStorage});
 
   @override
-  State<SVGList> createState() => _SVGListState();
+  State<SVGRenderStack> createState() => _SVGRenderStackState();
 }
 
-class _SVGListState extends State<SVGList> {
+class _SVGRenderStackState extends State<SVGRenderStack> {
   @override
   Widget build(BuildContext context) {
     double boxSize = MediaQuery.of(context).size.width / 2; // default is 400

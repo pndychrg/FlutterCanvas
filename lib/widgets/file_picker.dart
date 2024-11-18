@@ -17,7 +17,7 @@ class FilePickerWidget extends StatefulWidget {
 
 class _FilePickerWidgetState extends State<FilePickerWidget> {
   String _fileText = 'Pick a File';
-  Uint8List? _svgBytes; //For storing SVG content on web
+  // Uint8List? _svgBytes; //For storing SVG content on web
   FileService fileService = FileService();
   void _pickFile() async {
     try {
@@ -36,7 +36,7 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
             // fileService.saveSVGToLocalStorage(fileName, base64Data);
             setState(() {
               _fileText = 'SVG file loaded into memory: $fileName';
-              _svgBytes = fileBytes; // Store in memory
+              // _svgBytes = fileBytes; // Store in memory
             });
 
             //   Testing code
@@ -74,23 +74,10 @@ class _FilePickerWidgetState extends State<FilePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
         ElevatedButton(onPressed: _pickFile, child: Text("Pick a file")),
-        SizedBox(
-          height: 10,
-        ),
         Text(_fileText),
-        SizedBox(
-          height: 10,
-        ),
-        if (_svgBytes != null)
-          SvgPicture.memory(
-            _svgBytes!,
-            width: 200,
-            height: 200,
-            placeholderBuilder: (context) => CircularProgressIndicator(),
-          )
       ],
     );
   }

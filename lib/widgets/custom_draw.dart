@@ -52,7 +52,7 @@ class CustomTshirtWithSvgPaint extends StatelessWidget {
                   assetHeightRespToBox: 1.5,
                 ),
                 SvgPainterWithOffsetAndHeightPerc(
-                  assetName: selectedSleeve.assetLocation,
+                  assetName: selectedSleeve.assetLocation ?? '',
                   boxSize: boxSize,
                   dX: selectedSleeve.dX,
                   dY: selectedSleeve.dY,
@@ -60,7 +60,7 @@ class CustomTshirtWithSvgPaint extends StatelessWidget {
                   assetHeightRespToBox: selectedSleeve.assetHeightRespToBox,
                 ),
                 SvgPainterWithOffsetAndHeightPerc(
-                  assetName: selectedSleeve.assetLocation,
+                  assetName: selectedSleeve.assetLocation ?? '',
                   boxSize: boxSize,
                   dX: selectedSleeve.mirrorDX!,
                   dY: selectedSleeve.dY,
@@ -69,7 +69,7 @@ class CustomTshirtWithSvgPaint extends StatelessWidget {
                   mirror: true,
                 ),
                 SvgPainterWithOffsetAndHeightPerc(
-                  assetName: selectedCollor.assetLocation,
+                  assetName: selectedCollor.assetLocation ?? '',
                   boxSize: boxSize,
                   dX: selectedCollor.dX,
                   dY: selectedCollor.dY,

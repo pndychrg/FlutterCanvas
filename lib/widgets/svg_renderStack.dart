@@ -13,7 +13,7 @@ class SVGRenderStack extends StatefulWidget {
 class _SVGRenderStackState extends State<SVGRenderStack> {
   @override
   Widget build(BuildContext context) {
-    double boxSize = MediaQuery.of(context).size.width / 2; // default is 400
+    double boxSize = MediaQuery.of(context).size.width / 3; // default is 400
 
     // creating stack childrens list
     List<SvgPainterWithAssetModel> svgStackChildrenList = [];

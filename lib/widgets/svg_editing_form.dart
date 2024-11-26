@@ -192,7 +192,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     value: double.tryParse(_dXController.text) ?? 0.0,
                     min: -0.50,
                     max: 1.0,
-                    divisions: 200,
+                    divisions: 500,
                     label: _dXController.text,
                     onChanged: (value) {
                       setState(() {
@@ -230,7 +230,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     value: double.tryParse(_dYController.text) ?? 0.0,
                     min: -0.50,
                     max: 1.0,
-                    divisions: 200,
+                    divisions: 500,
                     label: _dYController.text,
                     onChanged: (value) {
                       setState(() {
@@ -269,7 +269,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     value: double.tryParse(_mirrorDXController.text) ?? 0.0,
                     min: -1.0,
                     max: 1.0,
-                    divisions: 200,
+                    divisions: 500,
                     label: _mirrorDXController.text,
                     onChanged: (value) {
                       setState(() {
@@ -310,7 +310,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                             0.0,
                     min: 0,
                     max: 10.0,
-                    divisions: 200,
+                    divisions: 500,
                     label: _assetHeightRespToBoxController.text,
                     onChanged: (value) {
                       setState(() {

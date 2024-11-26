@@ -33,7 +33,7 @@ class _SvgPainterWithAssetModelState extends State<SvgPainterWithAssetModel> {
               : Offset(widget.boxSize * widget.assetInfoModel.dX,
                   widget.boxSize * widget.assetInfoModel.dY),
           child: SvgPicture.string(
-            widget.assetInfoModel.svgDataString?.replaceAll("#FFFFFF",
+            widget.assetInfoModel.svgDataString?.replaceAll(widget.assetInfoModel.svgDataString?.contains("white") == true?"white":"#FFFFFF",
                     '#${widget.assetInfoModel.color.value.toRadixString(16).substring(2)}') ??
                 "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 1 1\"></svg>",
             height: widget.boxSize / widget.assetInfoModel.assetHeightRespToBox,

@@ -58,6 +58,9 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(
+          height: 24,
+        ),
         // FilePickerWidget(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -68,13 +71,9 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
             ),
           ],
         ),
-        SVGRenderStack(
-          svgListFromLocalStorage: svgListFromLocalStorage,
-        ),
         const SizedBox(
-          height: 10,
+          height: 24,
         ),
-        Text("Edit SVG By selecting"),
         Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,6 +93,9 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
                 ),
               ],
             )),
+            SVGRenderStack(
+              svgListFromLocalStorage: svgListFromLocalStorage,
+            ),
             Expanded(
               child: Opacity(
                 opacity: selectedSVGAssetModel == null ? 0.5 : 1.0,

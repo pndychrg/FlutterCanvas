@@ -309,7 +309,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                         double.tryParse(_assetHeightRespToBoxController.text) ??
                             0.0,
                     min: 0,
-                    max: 10.0,
+                    max: 50.0,
                     divisions: 500,
                     label: _assetHeightRespToBoxController.text,
                     onChanged: (value) {

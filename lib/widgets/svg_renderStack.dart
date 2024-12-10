@@ -64,8 +64,13 @@ class _SVGRenderStackState extends State<SVGRenderStack> {
               ),
             ],
           ),
-          child: Stack(
-            children: svgStackChildrenList,
+          child: InteractiveViewer(
+            clipBehavior: Clip.none,
+            minScale: 0.1,
+            maxScale: 2.5,
+            child: Stack(
+              children: svgStackChildrenList,
+            ),
           ),
         ),
       ),

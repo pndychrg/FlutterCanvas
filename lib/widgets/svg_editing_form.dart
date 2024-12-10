@@ -87,13 +87,36 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
   }
 
   void _addListeners() {
-    _dXController.addListener(() => _onValueChanged());
-    _dYController.addListener(() => _onValueChanged());
-    _assetHeightRespToBoxController.addListener(() => _onValueChanged());
-    _mirrorDXController.addListener(() => _onValueChanged());
+    _dXController.addListener(() => _onValueChanged("dX", _dXController.text));
+    _dYController.addListener(() => _onValueChanged("dY", _dYController.text));
+    _assetHeightRespToBoxController.addListener(() => _onValueChanged(
+        "assetHeightRespToBox", _assetHeightRespToBoxController.text));
+    _mirrorDXController.addListener(
+        () => _onValueChanged("mirrorDX", _mirrorDXController.text));
   }
 
-  void _onValueChanged() {
+  void _onValueChanged(String key, String value) {
+    if (key != "assetHeightRespToBox" && key != "color" && key != "mirrorDX") {
+      try {
+        double number = double.parse(value);
+
+        if (-0.50 > number || number > 1) {
+          return;
+        }
+      } catch (e) {}
+    }
+    if (key == "mirrorDX") {
+      try {
+        double number = double.parse(value);
+        if (number < -1 || number > 1) {
+          print("Error in mirrorDX while saving");
+          return;
+        }
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
     // Cancel previous timer if active
     if (_debounceTimer?.isActive ?? false) _debounceTimer!.cancel();
 
@@ -135,7 +158,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
         );
         bool isSaved = await fileService
             .updateSVGAssetModelByKey(assetInfoModelFromFormData);
-        print(isSaved.toString());
+
         widget.onAssetSaved(isSaved);
       } catch (e) {
         print("Error Occured $e");
@@ -143,15 +166,50 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
     }
   }
 
-  String? _validateDouble(String? value) {
+  String? _validateSizeValue(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter a number';
     }
     try {
-      double.parse(value);
+      double number = double.parse(value);
+      if (0 > number || number > 50) {
+        return "Value out of range. Please enter between -0.5 - 1";
+      }
     } catch (e) {
       return "Please enter a valid number";
     }
+    return null;
+  }
+
+  String? _validatePositionalValues(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a number';
+    }
+    try {
+      double number = double.parse(value);
+      if (-0.5 > number || number > 1) {
+        return "Value out of range. Please enter between -0.5 - 1";
+      }
+    } catch (e) {
+      return "Please enter a valid number";
+    }
+
+    return null;
+  }
+
+  String? _validateMirrorValue(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a number';
+    }
+    try {
+      double number = double.parse(value);
+      if (-1 > number || number > 1) {
+        return "Value out of range. Please enter between -0.5 - 1";
+      }
+    } catch (e) {
+      return "Please enter a valid number";
+    }
+
     return null;
   }
 
@@ -176,14 +234,14 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       labelText: "dX",
                     ),
                     keyboardType: TextInputType.number,
-                    validator: _validateDouble,
+                    validator: _validatePositionalValues,
                     // enabled: isMirror == false,
-                    onChanged: (value) {
-                      double parsedValue = double.tryParse(value) ?? 0.0;
-                      parsedValue = parsedValue.clamp(-0.50, 1.0);
-                      _dXController.text = parsedValue.toStringAsFixed(2);
-                      _onValueChanged();
-                    },
+                    // onChanged: (value) {
+                    //   double parsedValue = double.tryParse(value) ?? 0.0;
+                    //   parsedValue = parsedValue.clamp(-0.50, 1.0);
+                    //   _dXController.text = parsedValue.toString();
+                    //   _onValueChanged();
+                    // },
                   ),
                 ),
                 Expanded(
@@ -192,13 +250,13 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                     value: double.tryParse(_dXController.text) ?? 0.0,
                     min: -0.50,
                     max: 1.0,
-                    divisions: 500,
+                    divisions: 1000,
                     label: _dXController.text,
                     onChanged: (value) {
                       setState(() {
-                        _dXController.text = value.toStringAsFixed(2);
+                        _dXController.text = value.toStringAsFixed(3);
                       });
-                      _onValueChanged();
+                      _onValueChanged("dX", _dXController.text);
                     },
                   ),
                 ),
@@ -215,28 +273,30 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       labelText: "dY",
                     ),
                     keyboardType: TextInputType.number,
-                    validator: _validateDouble,
-                    onChanged: (value) {
-                      double parsedValue = double.tryParse(value) ?? 0.0;
-                      parsedValue = parsedValue.clamp(-0.50, 1.0);
-                      _dYController.text = parsedValue.toStringAsFixed(2);
-                      _onValueChanged();
-                    },
+                    validator: _validatePositionalValues,
+                    // onChanged: (value) {
+                    //   double parsedValue = double.tryParse(value) ?? 0.0;
+                    //   parsedValue = parsedValue.clamp(-0.50, 1.0);
+                    //   _dYController.text = parsedValue.toStringAsFixed(2);
+                    //   _onValueChanged(_dYController.text);
+                    // },
                   ),
                 ),
                 Expanded(
                   flex: 3,
                   child: Slider(
-                    value: double.tryParse(_dYController.text) ?? 0.0,
+                    value: double.tryParse(_dYController.text) != null
+                        ? double.parse(_dYController.text).clamp(-0.50, 1.0)
+                        : 0.0,
                     min: -0.50,
                     max: 1.0,
-                    divisions: 500,
+                    divisions: 1000,
                     label: _dYController.text,
                     onChanged: (value) {
                       setState(() {
-                        _dYController.text = value.toStringAsFixed(2);
+                        _dYController.text = value.toStringAsFixed(3);
                       });
-                      _onValueChanged();
+                      _onValueChanged("dY", _dYController.text);
                     },
                   ),
                 ),
@@ -253,14 +313,14 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       labelText: "MirrorDX",
                     ),
                     keyboardType: TextInputType.number,
-                    validator: _validateDouble,
+                    validator: _validateMirrorValue,
                     // enabled: isMirror,
-                    onChanged: (value) {
-                      double parsedValue = double.tryParse(value) ?? 0.0;
-                      parsedValue = parsedValue.clamp(-1.0, 1.0);
-                      _mirrorDXController.text = parsedValue.toStringAsFixed(2);
-                      _onValueChanged();
-                    },
+                    // onChanged: (value) {
+                    //   double parsedValue = double.tryParse(value) ?? 0.0;
+                    //   parsedValue = parsedValue.clamp(-1.0, 1.0);
+                    //   _mirrorDXController.text = parsedValue.toStringAsFixed(2);
+                    //   _onValueChanged(_mirrorDXController.text);
+                    // },
                   ),
                 ),
                 Expanded(
@@ -275,7 +335,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       setState(() {
                         _mirrorDXController.text = value.toStringAsFixed(2);
                       });
-                      _onValueChanged();
+                      _onValueChanged("mirrorDX", _mirrorDXController.text);
                     },
                   ),
                 ),
@@ -292,14 +352,14 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                       labelText: "Asset Height Respect To Box",
                     ),
                     keyboardType: TextInputType.number,
-                    validator: _validateDouble,
-                    onChanged: (value) {
-                      double parsedValue = double.tryParse(value) ?? 0.0;
-                      parsedValue = parsedValue.clamp(0, 10.0);
-                      _assetHeightRespToBoxController.text =
-                          parsedValue.toStringAsFixed(2);
-                      _onValueChanged();
-                    },
+                    validator: _validateSizeValue,
+                    // onChanged: (value) {
+                    //   double parsedValue = double.tryParse(value) ?? 0.0;
+                    //   parsedValue = parsedValue.clamp(0, 10.0);
+                    //   _assetHeightRespToBoxController.text =
+                    //       parsedValue.toStringAsFixed(2);
+                    //   _onValueChanged(_assetHeightRespToBoxController.text);
+                    // },
                   ),
                 ),
                 Expanded(
@@ -317,7 +377,8 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                         _assetHeightRespToBoxController.text =
                             value.toStringAsFixed(2);
                       });
-                      _onValueChanged();
+                      _onValueChanged("assetHeightRespToBox",
+                          _assetHeightRespToBoxController.text);
                     },
                   ),
                 ),
@@ -330,7 +391,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                 setState(() {
                   selectedColor = color;
                 });
-                _onValueChanged();
+                _onValueChanged("color", "");
               },
             ),
             const SizedBox(height: 20),

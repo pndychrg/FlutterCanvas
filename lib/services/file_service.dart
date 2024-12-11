@@ -68,7 +68,6 @@ class FileService {
       if (svgList != null) {
         // List<AssetInfoModel> svgAssetList = jsonDecode(svgList);
         List decodedSvgList = jsonDecode(svgList).toList();
-        print(decodedSvgList.toList());
         for (String svgKey in decodedSvgList) {
           svgAssetList.add(await getSVGAssetModelByKey(svgKey));
         }
@@ -105,7 +104,7 @@ class FileService {
     try {
       SharedPreferences prefs = await getSharedInstance();
       // Retrieve the SVG map
-      print(svgKey);
+
       String? existingData = prefs.getString(svgKey);
       // print(existingData.runtimeType);
       // Map jsonMap = jsonDecode(existingData!);

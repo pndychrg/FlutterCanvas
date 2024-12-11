@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:human_canvas/models/asset_info_model.dart';
+import 'package:human_canvas/widgets/svg_painter_withPosition.dart';
 import 'package:human_canvas/widgets/svg_painter_with_assetModel.dart';
 
 class SVGRenderStack extends StatefulWidget {
   final List<AssetInfoModel?> svgListFromLocalStorage;
-  const SVGRenderStack({super.key, required this.svgListFromLocalStorage});
-
+  final int? selectedSVGAssetModelIndex;
+  final void Function(bool, AssetInfoModel updatedAssetModel) onAssetSaved;
+  const SVGRenderStack({
+    super.key,
+    required this.svgListFromLocalStorage,
+    required this.selectedSVGAssetModelIndex,
+    required this.onAssetSaved,
+  });
   @override
   State<SVGRenderStack> createState() => _SVGRenderStackState();
 }
@@ -16,34 +23,68 @@ class _SVGRenderStackState extends State<SVGRenderStack> {
     double boxSize = MediaQuery.of(context).size.width / 3; // default is 400
 
     // creating stack childrens list
-    List<SvgPainterWithAssetModel> svgStackChildrenList = [];
+    // List<SvgPainterWithAssetModel> svgStackChildrenList = [];
+
+    List<SvgPainterWithposition> svgPainterStackChildrenList = [];
     widget.svgListFromLocalStorage.forEach((assetInfoModel) {
+      int index = widget.svgListFromLocalStorage.indexOf(assetInfoModel);
       if (assetInfoModel != null) {
         // checking if the mirrorDx value is set to -1
         if (assetInfoModel.mirrorDX == -1) {
-          svgStackChildrenList.add(SvgPainterWithAssetModel(
+          // svgStackChildrenList.add(SvgPainterWithAssetModel(
+          //   assetInfoModel: assetInfoModel,
+          //   selectedColor: Colors.white,
+          //   boxSize: boxSize,
+          //   mirror: false,
+          //   isSelected: index == widget.selectedSVGAssetModelIndex,
+          //   onAssetSaved: widget.onAssetSaved,
+          // ));
+          svgPainterStackChildrenList.add(SvgPainterWithposition(
             assetInfoModel: assetInfoModel,
             selectedColor: Colors.white,
             boxSize: boxSize,
             mirror: false,
+            isSelected: index == widget.selectedSVGAssetModelIndex,
+            onAssetSaved: widget.onAssetSaved,
           ));
         } else {
           // adding it two times as left and mirrored right
-          svgStackChildrenList.add(SvgPainterWithAssetModel(
+          // svgStackChildrenList.add(SvgPainterWithAssetModel(
+          //   assetInfoModel: assetInfoModel,
+          //   selectedColor: Colors.white,
+          //   boxSize: boxSize,
+          //   mirror: false,
+          //   isSelected: index == widget.selectedSVGAssetModelIndex,
+          //   onAssetSaved: widget.onAssetSaved,
+          // ));
+          // svgStackChildrenList.add(SvgPainterWithAssetModel(
+          //   assetInfoModel: assetInfoModel,
+          //   selectedColor: Colors.white,
+          //   boxSize: boxSize,
+          //   mirror: true,
+          //   isSelected: index == widget.selectedSVGAssetModelIndex,
+          //   onAssetSaved: widget.onAssetSaved,
+          // ));
+          svgPainterStackChildrenList.add(SvgPainterWithposition(
             assetInfoModel: assetInfoModel,
             selectedColor: Colors.white,
             boxSize: boxSize,
             mirror: false,
+            isSelected: index == widget.selectedSVGAssetModelIndex,
+            onAssetSaved: widget.onAssetSaved,
           ));
-          svgStackChildrenList.add(SvgPainterWithAssetModel(
+          svgPainterStackChildrenList.add(SvgPainterWithposition(
             assetInfoModel: assetInfoModel,
             selectedColor: Colors.white,
             boxSize: boxSize,
             mirror: true,
+            isSelected: index == widget.selectedSVGAssetModelIndex,
+            onAssetSaved: widget.onAssetSaved,
           ));
         }
       }
     });
+
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Center(
@@ -64,13 +105,17 @@ class _SVGRenderStackState extends State<SVGRenderStack> {
               ),
             ],
           ),
-          child: InteractiveViewer(
-            clipBehavior: Clip.none,
-            minScale: 0.1,
-            maxScale: 2.5,
-            child: Stack(
-              children: svgStackChildrenList,
-            ),
+          // child: InteractiveViewer(
+          //   clipBehavior: Clip.none,
+          //   minScale: 0.1,
+          //   maxScale: 2.5,
+          //   child: Stack(
+          //     children: svgStackChildrenList,
+          //   ),
+          // ),
+          child: Stack(
+            // children: svgStackChildrenList,
+            children: svgPainterStackChildrenList,
           ),
         ),
       ),

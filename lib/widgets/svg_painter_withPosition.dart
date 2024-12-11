@@ -37,8 +37,8 @@ class _SvgPainterWithpositionState extends State<SvgPainterWithposition> {
         //   Creating a assetInfoModel with updated positions
         AssetInfoModel assetInfoModelWithUpdatedPositions = AssetInfoModel(
             assetHeightRespToBox: widget.assetInfoModel.assetHeightRespToBox,
-            dY: newDY,
-            dX: newDX,
+            dY: double.parse(newDY.toStringAsPrecision(3)),
+            dX: double.parse(newDX.toStringAsPrecision(3)),
             mirrorDX: widget.assetInfoModel.mirrorDX,
             svgDataString: widget.assetInfoModel.svgDataString,
             assetName: widget.assetInfoModel.assetName,
@@ -57,9 +57,9 @@ class _SvgPainterWithpositionState extends State<SvgPainterWithposition> {
         //   Creating a assetInfoModel with updated positions
         AssetInfoModel assetInfoModelWithUpdatedPositions = AssetInfoModel(
             assetHeightRespToBox: widget.assetInfoModel.assetHeightRespToBox,
-            dY: newDY,
+            dY: double.parse(newDY.toStringAsPrecision(3)),
             dX: widget.assetInfoModel.dX,
-            mirrorDX: mirrorDX,
+            mirrorDX: double.parse(mirrorDX.toStringAsPrecision(3)),
             svgDataString: widget.assetInfoModel.svgDataString,
             assetName: widget.assetInfoModel.assetName,
             color: widget.assetInfoModel.color);

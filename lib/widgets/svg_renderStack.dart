@@ -105,18 +105,18 @@ class _SVGRenderStackState extends State<SVGRenderStack> {
               ),
             ],
           ),
-          child: InteractiveViewer(
-            clipBehavior: Clip.none,
-            minScale: 0.1,
-            maxScale: 2.5,
-            child: Stack(
-              children: svgPainterStackChildrenList,
-            ),
-          ),
-          // child: Stack(
-          //   // children: svgStackChildrenList,
-          //   children: svgPainterStackChildrenList,
+          // child: InteractiveViewer(
+          //   clipBehavior: Clip.none,
+          //   minScale: 0.1,
+          //   maxScale: 2.5,
+          //   child: Stack(
+          //     children: svgPainterStackChildrenList,
+          //   ),
           // ),
+          child: Stack(
+            // children: svgStackChildrenList,
+            children: svgPainterStackChildrenList,
+          ),
         ),
       ),
     );

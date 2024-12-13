@@ -29,9 +29,9 @@ class _SvgPainterWithpositionState extends State<SvgPainterWithposition> {
   Timer? _debounceTimer;
 
   void _saveAssetInfo(double newDX, double newDY, double mirrorDX) async {
-    print("_saveAssetInfo ran in SVGPainterwithPosition Widget");
+    // print("_saveAssetInfo ran in SVGPainterwithPosition Widget");
     FileService fileService = FileService();
-    print(widget.mirror);
+    // print(widget.mirror);
     if (widget.isSelected == true && widget.mirror == false) {
       try {
         //   Creating a assetInfoModel with updated positions
@@ -44,10 +44,10 @@ class _SvgPainterWithpositionState extends State<SvgPainterWithposition> {
             assetName: widget.assetInfoModel.assetName,
             color: widget.assetInfoModel.color);
 
-        bool isSaved = await fileService
-            .updateSVGAssetModelByKey(assetInfoModelWithUpdatedPositions);
-        if (isSaved == true) {
-          widget.onAssetSaved(isSaved, assetInfoModelWithUpdatedPositions);
+        // bool isSaved = await fileService
+        //     .updateSVGAssetModelByKey(assetInfoModelWithUpdatedPositions);
+        if (true == true) {
+          widget.onAssetSaved(true, assetInfoModelWithUpdatedPositions);
         }
       } catch (e) {
         print(e.toString());
@@ -64,10 +64,10 @@ class _SvgPainterWithpositionState extends State<SvgPainterWithposition> {
             assetName: widget.assetInfoModel.assetName,
             color: widget.assetInfoModel.color);
 
-        bool isSaved = await fileService
-            .updateSVGAssetModelByKey(assetInfoModelWithUpdatedPositions);
-        if (isSaved == true) {
-          widget.onAssetSaved(isSaved, assetInfoModelWithUpdatedPositions);
+        // bool isSaved = await fileService
+        //     .updateSVGAssetModelByKey(assetInfoModelWithUpdatedPositions);
+        if (true == true) {
+          widget.onAssetSaved(true, assetInfoModelWithUpdatedPositions);
         }
       } catch (e) {
         print(e.toString());

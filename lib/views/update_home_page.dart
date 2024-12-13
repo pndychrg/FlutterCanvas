@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:human_canvas/models/asset_info_model.dart';
 import 'package:human_canvas/services/file_service.dart';
@@ -34,6 +36,17 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
       selectedSVGAssetModel = selectedSVGModeFromList;
       selectedSVGAssetModelIndex = index;
     });
+  }
+
+  void updateSelectedAssetModelInList(AssetInfoModel updatedModel) {
+    Stopwatch stopwatch = new Stopwatch()..start();
+    setState(() {
+      svgListFromLocalStorage[svgListFromLocalStorage.indexWhere(
+              (model) => model?.assetName == updatedModel.assetName)] =
+          updatedModel;
+    });
+    print("Time elapsed : ${stopwatch.elapsed.inSeconds}");
+    stopwatch.stop();
   }
 
   void deleteSelectedSVGModel(String assetModelName) async {
@@ -101,7 +114,8 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
               selectedSVGAssetModelIndex: selectedSVGAssetModelIndex,
               onAssetSaved: (bool isSaved, AssetInfoModel updatedAssetModel) {
                 if (isSaved) {
-                  updateSvgList();
+                  // updateSvgList();
+                  updateSelectedAssetModelInList(updatedAssetModel);
                   setState(() {
                     selectedSVGAssetModel = updatedAssetModel;
                   });
@@ -115,12 +129,14 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
                   ignoring: selectedSVGAssetModel == null,
                   child: SVGEditingForm(
                     selectedAssetInfoModel: selectedSVGAssetModel,
-                    onAssetSaved: (bool isSaved) {
+                    onAssetSaved:
+                        (bool isSaved, AssetInfoModel updatedAssetModel) {
                       if (isSaved) {
-                        updateSvgList();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text("SVG Asset Updated!")));
+                        // updateSvgList();
+                        updateSelectedAssetModelInList(updatedAssetModel);
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //         content: Text("SVG Asset Updated!")));
                       }
                     },
                   ),

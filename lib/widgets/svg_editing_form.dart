@@ -7,7 +7,7 @@ import 'package:human_canvas/models/asset_info_model.dart';
 import 'package:human_canvas/services/file_service.dart';
 
 class SVGEditingForm extends StatefulWidget {
-  final void Function(bool) onAssetSaved;
+  final void Function(bool, AssetInfoModel) onAssetSaved;
   final AssetInfoModel? selectedAssetInfoModel;
   const SVGEditingForm(
       {super.key,
@@ -156,10 +156,11 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
           color: selectedColor,
           // isMirror: isMirror,
         );
-        bool isSaved = await fileService
-            .updateSVGAssetModelByKey(assetInfoModelFromFormData);
-
-        widget.onAssetSaved(isSaved);
+        // bool isSaved = await fileService
+        //     .updateSVGAssetModelByKey(assetInfoModelFromFormData);
+        //
+        // widget.onAssetSaved(isSaved);
+        widget.onAssetSaved(true, assetInfoModelFromFormData);
       } catch (e) {
         print("Error Occured $e");
       }

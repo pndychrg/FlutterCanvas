@@ -16,6 +16,7 @@ class UpdatedHomePage extends StatefulWidget {
 
 class _UpdatedHomePageState extends State<UpdatedHomePage> {
   AssetInfoModel? selectedSVGAssetModel;
+  int? selectedSVGAssetModelIndex;
   List<AssetInfoModel?> svgListFromLocalStorage = [];
   final FileService fileService = FileService();
   void updateSvgList() async {
@@ -27,9 +28,11 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
     });
   }
 
-  void updateSelectedSVGModel(AssetInfoModel selectedSVGModeFromList) {
+  void updateSelectedSVGModel(
+      AssetInfoModel selectedSVGModeFromList, int index) {
     setState(() {
       selectedSVGAssetModel = selectedSVGModeFromList;
+      selectedSVGAssetModelIndex = index;
     });
   }
 
@@ -95,6 +98,15 @@ class _UpdatedHomePageState extends State<UpdatedHomePage> {
             )),
             SVGRenderStack(
               svgListFromLocalStorage: svgListFromLocalStorage,
+              selectedSVGAssetModelIndex: selectedSVGAssetModelIndex,
+              onAssetSaved: (bool isSaved, AssetInfoModel updatedAssetModel) {
+                if (isSaved) {
+                  updateSvgList();
+                  setState(() {
+                    selectedSVGAssetModel = updatedAssetModel;
+                  });
+                }
+              },
             ),
             Expanded(
               child: Opacity(

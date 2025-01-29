@@ -3,7 +3,7 @@ import 'package:human_canvas/models/asset_info_model.dart';
 
 class SVGList extends StatefulWidget {
   final List<AssetInfoModel?> svgListFromLocalStorage;
-  final Function(AssetInfoModel) updateSelectedSVGAssetModel;
+  final Function(AssetInfoModel, int) updateSelectedSVGAssetModel;
   final Function(String) deleteSelectedSVGAssetModel;
   final Function(List<AssetInfoModel?>) updateListInParent;
   const SVGList({
@@ -77,8 +77,8 @@ class _SVGListState extends State<SVGList> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () =>
-                            widget.updateSelectedSVGAssetModel(assetInfoModel),
+                        onPressed: () => widget.updateSelectedSVGAssetModel(
+                            assetInfoModel, index),
                         icon: Icon(
                           Icons.edit,
                           color: Colors.blue,

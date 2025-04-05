@@ -172,7 +172,7 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
     }
     try {
       double number = double.parse(value);
-      if (0 > number || number > 50) {
+      if (0 > number || number > 100) {
         return "Value out of range. Please enter between -0.5 - 1";
       }
     } catch (e) {
@@ -369,8 +369,8 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                         double.tryParse(_assetHeightRespToBoxController.text) ??
                             0.0,
                     min: 0,
-                    max: 50.0,
-                    divisions: 500,
+                    max: 100.0,
+                    divisions: 750,
                     label: _assetHeightRespToBoxController.text,
                     onChanged: (value) {
                       setState(() {
@@ -391,8 +391,27 @@ class _SVGEditingFormState extends State<SVGEditingForm> {
                 setState(() {
                   selectedColor = color;
                 });
-                _onValueChanged("color", "");
+                _onValueChanged("color", selectedColor.toString());
               },
+              
+              colors: [
+                const ColorSwatch(
+                    0xFF000000, {500: Color(0xFF000000)}), // Black
+                const ColorSwatch(
+                    0xFFFFFFFF, {500: Color(0xFFFFFFFF)}), // White
+                Colors.red,
+                Colors.green,
+                Colors.blue,
+                Colors.orange,
+                Colors.purple,
+                Colors.yellow,
+                Colors.brown,
+                Colors.teal,
+                Colors.indigo,
+                Colors.pink,
+                Colors.cyan,
+                Colors.lime,
+              ],
             ),
             const SizedBox(height: 20),
             Row(
